@@ -1,0 +1,29 @@
+cmake_minimum_required(VERSION 3.24)
+include(FetchContent)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS ON)
+set(CMAKE_C_FLAGS_DEBUG
+    "${CMAKE_C_FLAGS_DEBUG} -g3 -Wall -Wextra -O1 -Wformat=2")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+project(MarketReader)
+
+LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+message(STATUS "The value of LIBUV_INCLUDE_DIRS is: ${LIBUV_INCLUDE_DIRS}")
+message(STATUS "The value of LIBUV_LIBRARIES is: ${LIBUV_LIBRARIES}")
+find_package(libuv REQUIRED)
+
+if(NOT libuv_FOUND)
+    message(FATAL_ERROR "libub library not found!!")
+endif()
+
+add_executable(MarketReader main.c)
+
+TARGET_INCLUDE_DIRECTORIES(MarketReader PRIVATE ${LIBUV_INCLUDE_DIRS})
+TARGET_LINK_LIBRARIES(MarketReader PRIVATE ${LIBUV_LIBRARIES})

@@ -1,0 +1,6 @@
+build
+cmake
+compile_commands.json
+.env
+.cache
+
